@@ -1,0 +1,196 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #081b31;
+    color: white;
+    font-family: sans-serif;
+}
+
+h1 {
+    background-color: #04111f;
+    color: white;
+    height: 5rem;
+    line-height: 5rem;
+    text-align: center;
+}
+
+/* Mode Toggle */
+.mode-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.mode-btn {
+    padding: 0.6rem 2rem;
+    border-radius: 25px;
+    border: 2px solid #7b61ff;
+    background: transparent;
+    color: #7b61ff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.mode-btn.active {
+    background: #7b61ff;
+    color: white;
+}
+
+.mode-btn:hover {
+    background: #7b61ff;
+    color: white;
+}
+
+/* Player Tags */
+.player-tags {
+    display: flex;
+    justify-content: center;
+    gap: 10rem;
+    font-size: 1.2rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+/* Choices */
+.choice {
+    height: 165px;
+    width: 165px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 3px solid transparent;
+}
+
+.choice:hover {
+    cursor: pointer;
+    background-color: rgba(123, 97, 255, 0.3);
+    transform: scale(1.08);
+    border-color: #7b61ff;
+}
+
+img {
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.choices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+/* Computer choice tag */
+.comp-choice-container {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1.3rem;
+    color: #aaa;
+}
+
+#comp-choice-text {
+    color: #7b61ff;
+    font-weight: 700;
+}
+
+/* Score Board */
+.score-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin: 2rem;
+    gap: 5rem;
+    text-align: center;
+}
+
+#user-score, #comp-score {
+    font-size: 4rem;
+}
+
+/* Message */
+.msg-container {
+    margin-top: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+#msg {
+    background-color: #04111f;
+    color: white;
+    font-size: 1.5rem;
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
+#replay-btn {
+    padding: 0.6rem 2rem;
+    border-radius: 25px;
+    border: 2px solid #7b61ff;
+    background: transparent;
+    color: #7b61ff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#replay-btn:hover {
+    background: #7b61ff;
+    color: white;
+}
+
+/* Overlay for Player 2 */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-box {
+    background: #0d2137;
+    border: 2px solid #7b61ff;
+    border-radius: 20px;
+    padding: 2rem 3rem;
+    text-align: center;
+}
+
+.overlay-box h2 {
+    font-size: 2rem;
+    color: #7b61ff;
+    margin-bottom: 0.5rem;
+}
+
+.overlay-box p {
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .choices { gap: 1rem; }
+    .choice { height: 100px; width: 100px; }
+    img { height: 90px; width: 90px; }
+    .score-board { gap: 3rem; }
+    .player-tags { gap: 5rem; }
+}
