@@ -1,82 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Paper Scissors Game</title>
+    <title>RPS Arena</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <h1>Rock Paper Scissors</h1>
 
-    <!-- Mode Toggle -->
-    <div class="mode-toggle">
-        <button class="mode-btn active" id="vs-comp-btn">vs Computer</button>
-        <button class="mode-btn" id="vs-human-btn">vs Human</button>
-    </div>
+    <div class="bg-grid"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
 
-    <!-- Player Tags -->
-    <div class="player-tags">
-        <span id="p1-tag">You</span>
-        <span id="p2-tag">Computer</span>
-    </div>
-
-    <!-- Choices -->
-    <div class="choices">
-        <div class="choice" id="rock">
-            <img src="Stone.jpg" alt="Rock">
+    <header class="header">
+        <div class="header-inner">
+            <div class="logo">
+                <span class="logo-icon">⚔️</span>
+                <span class="logo-text">RPS <em>Arena</em></span>
+            </div>
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="vs-comp-btn">
+                    <i class="fas fa-robot"></i> vs Computer
+                </button>
+                <button class="mode-btn" id="vs-human-btn">
+                    <i class="fas fa-user-friends"></i> vs Human
+                </button>
+            </div>
         </div>
-        <div class="choice" id="paper">
-            <img src="Paper.jpg" alt="Paper">
+    </header>
+
+    <main class="main">
+
+        <!-- Score Board -->
+        <div class="score-board">
+            <div class="score-card">
+                <div class="score-num" id="user-score">0</div>
+                <div class="score-label" id="score-p1-label">You</div>
+            </div>
+            <div class="vs-divider">VS</div>
+            <div class="score-card">
+                <div class="score-num" id="comp-score">0</div>
+                <div class="score-label" id="score-p2-label">Computer</div>
+            </div>
         </div>
-        <div class="choice" id="scissor">
-            <img src="Scissor.jpg" alt="Scissor">
+
+        <!-- Player Tags -->
+        <div class="player-tags">
+            <span class="ptag" id="p1-tag">You</span>
+            <span class="ptag" id="p2-tag">Computer</span>
         </div>
-    </div>
 
-    <!-- Computer/Player2 Choice Display -->
-    <div class="comp-choice-container" id="comp-choice-container">
-        <p id="comp-choice-tag">Computer chose: <span id="comp-choice-text">-</span></p>
-    </div>
-
-    <!-- Score Board -->
-    <div class="score-board">
-        <div class="score">
-            <p id="user-score">0</p>
-            <p id="score-p1-label">You</p>
+        <!-- Choices -->
+        <div class="choices">
+            <div class="choice" id="rock" title="Rock">
+                <div class="choice-inner">
+                    <span class="choice-emoji">✊</span>
+                    <span class="choice-label">Rock</span>
+                </div>
+                <div class="choice-glow"></div>
+            </div>
+            <div class="choice" id="paper" title="Paper">
+                <div class="choice-inner">
+                    <span class="choice-emoji">✋</span>
+                    <span class="choice-label">Paper</span>
+                </div>
+                <div class="choice-glow"></div>
+            </div>
+            <div class="choice" id="scissor" title="Scissors">
+                <div class="choice-inner">
+                    <span class="choice-emoji">✌️</span>
+                    <span class="choice-label">Scissors</span>
+                </div>
+                <div class="choice-glow"></div>
+            </div>
         </div>
-        <div class="score">
-            <p id="comp-score">0</p>
-            <p id="score-p2-label">Computer</p>
+
+        <!-- Computer Choice Display -->
+        <div class="comp-choice-container" id="comp-choice-container">
+            <span class="comp-choice-label">Computer chose:</span>
+            <span class="comp-choice-val" id="comp-choice-text">—</span>
         </div>
-    </div>
 
-    <!-- Message -->
-    <div class="msg-container">
-        <p id="msg">Play your move</p>
-    </div>
+        <!-- Message -->
+        <div class="msg-container">
+            <div id="msg" class="msg">Play your move</div>
+        </div>
 
-    <div style="text-align:center; margin: 1rem 0 2rem;">
-        <button id="replay-btn">🔄 Replay</button>
-    </div>
+        <!-- Replay -->
+        <div class="replay-wrap">
+            <button id="replay-btn" class="replay-btn">
+                <i class="fas fa-redo"></i> Reset
+            </button>
+        </div>
 
-    <!-- Player 2 turn overlay (Human vs Human) -->
+    </main>
+
+    <!-- Player 2 overlay -->
     <div class="overlay" id="overlay">
         <div class="overlay-box">
+            <div class="overlay-icon">🕵️</div>
             <h2>Player 2's Turn</h2>
-            <p>Player 1 has made their choice!</p>
-            <p>Now Player 2 — pick your move</p>
-            <div class="choices">
+            <p>Player 1 has locked in their move. <br>Player 2 — choose wisely!</p>
+            <div class="choices choices-overlay">
                 <div class="choice p2-choice" id="p2-rock">
-                    <img src="Stone.jpg" alt="Rock">
+                    <div class="choice-inner">
+                        <span class="choice-emoji">✊</span>
+                        <span class="choice-label">Rock</span>
+                    </div>
+                    <div class="choice-glow"></div>
                 </div>
                 <div class="choice p2-choice" id="p2-paper">
-                    <img src="Paper.jpg" alt="Paper">
+                    <div class="choice-inner">
+                        <span class="choice-emoji">✋</span>
+                        <span class="choice-label">Paper</span>
+                    </div>
+                    <div class="choice-glow"></div>
                 </div>
                 <div class="choice p2-choice" id="p2-scissor">
-                    <img src="Scissor.jpg" alt="Scissor">
+                    <div class="choice-inner">
+                        <span class="choice-emoji">✌️</span>
+                        <span class="choice-label">Scissors</span>
+                    </div>
+                    <div class="choice-glow"></div>
                 </div>
             </div>
         </div>
@@ -84,5 +133,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
