@@ -1,6 +1,6 @@
 let userScore = 0;
 let compScore = 0;
-let currentMode = 'comp'; // 'comp' or 'human'
+let currentMode = 'comp';
 let p1Choice = null;
 
 const msg = document.querySelector('#msg');
@@ -19,15 +19,25 @@ const scoreP2Label = document.querySelector('#score-p2-label');
 const choiceEmoji = {
     rock: '✊ Rock',
     paper: '✋ Paper',
-    scissor: '✌️ Scissor'
+    scissor: '✌️ Scissors'
 };
 
-// Mode toggle
+const setMsg = (text, type = '') => {
+    msg.textContent = text;
+    msg.className = 'msg' + (type ? ' ' + type : '');
+};
+
+const popScore = (el) => {
+    el.classList.remove('pop');
+    void el.offsetWidth;
+    el.classList.add('pop');
+};
+
 vsCompBtn.addEventListener('click', () => {
     currentMode = 'comp';
     vsCompBtn.classList.add('active');
     vsHumanBtn.classList.remove('active');
-    compChoiceContainer.style.display = 'block';
+    compChoiceContainer.style.display = 'flex';
     p1Tag.textContent = 'You';
     p2Tag.textContent = 'Computer';
     scoreP1Label.textContent = 'You';
@@ -49,70 +59,59 @@ vsHumanBtn.addEventListener('click', () => {
 
 const genCompChoice = () => {
     const options = ["rock", "paper", "scissor"];
-    const randIdx = Math.floor(Math.random() * 3);
-    return options[randIdx];
+    return options[Math.floor(Math.random() * 3)];
 };
 
-const drawGame = () => {
-    msg.innerHTML = "It's a Draw! Play again";
-    msg.style.backgroundColor = "orange";
+const decideWinner = (c1, c2) => {
+    if (c1 === c2) return 'draw';
+    if (
+        (c1 === 'rock' && c2 === 'scissor') ||
+        (c1 === 'paper' && c2 === 'rock') ||
+        (c1 === 'scissor' && c2 === 'paper')
+    ) return 'p1';
+    return 'p2';
 };
+
+const drawGame = () => setMsg("It's a Draw! Play again", 'draw');
 
 const showWinner = (userWin, p1, p2) => {
     if (userWin) {
         userScore++;
-        userScorePara.innerHTML = userScore;
+        userScorePara.textContent = userScore;
+        popScore(userScorePara);
         if (currentMode === 'comp') {
-            msg.innerHTML = `You win! You chose ${choiceEmoji[p1]}`;
+            setMsg(`You win! ${choiceEmoji[p1]} beats ${choiceEmoji[p2]}`, 'win');
         } else {
-            msg.innerHTML = `Player 1 wins! ${choiceEmoji[p1]} beats ${choiceEmoji[p2]}`;
+            setMsg(`Player 1 wins! ${choiceEmoji[p1]} beats ${choiceEmoji[p2]}`, 'win');
         }
-        msg.style.backgroundColor = "green";
     } else {
         compScore++;
-        compScorePara.innerHTML = compScore;
+        compScorePara.textContent = compScore;
+        popScore(compScorePara);
         if (currentMode === 'comp') {
-            msg.innerHTML = `You lose! Computer chose ${choiceEmoji[p2]}`;
+            setMsg(`You lose! ${choiceEmoji[p2]} beats ${choiceEmoji[p1]}`, 'lose');
         } else {
-            msg.innerHTML = `Player 2 wins! ${choiceEmoji[p2]} beats ${choiceEmoji[p1]}`;
+            setMsg(`Player 2 wins! ${choiceEmoji[p2]} beats ${choiceEmoji[p1]}`, 'lose');
         }
-        msg.style.backgroundColor = "red";
     }
-};
-
-const decideWinner = (choice1, choice2) => {
-    if (choice1 === choice2) return 'draw';
-    if (
-        (choice1 === 'rock' && choice2 === 'scissor') ||
-        (choice1 === 'paper' && choice2 === 'rock') ||
-        (choice1 === 'scissor' && choice2 === 'paper')
-    ) return 'p1';
-    return 'p2';
 };
 
 const playVsComp = (userChoice) => {
     const compChoice = genCompChoice();
     compChoiceText.textContent = choiceEmoji[compChoice];
     const result = decideWinner(userChoice, compChoice);
-    if (result === 'draw') {
-        drawGame();
-    } else {
-        showWinner(result === 'p1', userChoice, compChoice);
-    }
+    if (result === 'draw') drawGame();
+    else showWinner(result === 'p1', userChoice, compChoice);
 };
 
 const playVsHuman = (p2Choice) => {
     overlay.style.display = 'none';
     const result = decideWinner(p1Choice, p2Choice);
-    if (result === 'draw') {
-        drawGame();
-    } else {
-        showWinner(result === 'p1', p1Choice, p2Choice);
-    }
+    if (result === 'draw') drawGame();
+    else showWinner(result === 'p1', p1Choice, p2Choice);
     p1Choice = null;
 };
 
-// Main choices — Player 1 / Human vs Comp
 document.querySelectorAll('.choice:not(.p2-choice)').forEach((choice) => {
     choice.addEventListener('click', () => {
         const userChoice = choice.getAttribute('id');
@@ -120,14 +119,12 @@ document.querySelectorAll('.choice:not(.p2-choice)').forEach((choice) => {
             playVsComp(userChoice);
         } else {
             p1Choice = userChoice;
-            msg.innerHTML = "Player 1 chose! Now Player 2...";
-            msg.style.backgroundColor = "#081b31";
+            setMsg('Player 1 locked in! Player 2 — your turn…');
             overlay.style.display = 'flex';
         }
     });
 });
 
-// Player 2 choices
 document.querySelectorAll('.p2-choice').forEach((choice) => {
     choice.addEventListener('click', () => {
         const p2Choice = choice.getAttribute('id').replace('p2-', '');
@@ -136,18 +133,13 @@ document.querySelectorAll('.p2-choice').forEach((choice) => {
 });
 
 const resetGame = () => {
-    userScore = 0;
-    compScore = 0;
-    userScorePara.innerHTML = 0;
-    compScorePara.innerHTML = 0;
-    msg.innerHTML = 'Play your move';
-    msg.style.backgroundColor = '#081b31';
-    compChoiceText.textContent = '-';
+    userScore = 0; compScore = 0;
+    userScorePara.textContent = 0;
+    compScorePara.textContent = 0;
+    setMsg('Play your move');
+    compChoiceText.textContent = '—';
     p1Choice = null;
     overlay.style.display = 'none';
 };
 
-
-document.querySelector('#replay-btn').addEventListener('click', () => {
-    resetGame();
-});
+document.querySelector('#replay-btn').addEventListener('click', resetGame);
